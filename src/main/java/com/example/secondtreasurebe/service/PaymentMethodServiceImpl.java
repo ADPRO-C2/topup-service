@@ -41,4 +41,8 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
         return paymentMethodRepository.findAll();  // Assuming you have or will implement this method
     }
 
+    @Override
+    public void deletePaymentMethod(String paymentId) {
+        paymentMethodRepository.delete(paymentId);
+    }
 }

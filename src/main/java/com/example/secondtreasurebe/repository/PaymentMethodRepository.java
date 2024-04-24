@@ -26,4 +26,7 @@ public class PaymentMethodRepository {
         return new ArrayList<>(paymentMethodData);
     }
 
+    public void delete(String paymentId) {
+        paymentMethodData.removeIf(paymentMethod -> paymentMethod.getPaymentId().equals(paymentId));
+    }
 }

@@ -26,4 +26,10 @@ public class PaymentMethodController {
         List<PaymentMethod> paymentMethods = paymentMethodService.getAllPaymentMethods();
         return ResponseEntity.ok(paymentMethods);
     }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Void> deletePaymentMethod(@PathVariable String id) {
+        paymentMethodService.deletePaymentMethod(id);
+        return ResponseEntity.ok().build();  // Return an appropriate status
+    }
 }
