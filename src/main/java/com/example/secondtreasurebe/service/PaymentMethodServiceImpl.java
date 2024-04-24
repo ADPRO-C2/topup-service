@@ -6,6 +6,7 @@ import com.example.secondtreasurebe.model.PaymentMethod;
 import com.example.secondtreasurebe.repository.PaymentMethodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class PaymentMethodServiceImpl implements PaymentMethodService {
@@ -35,4 +36,9 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
         paymentMethodRepository.save(paymentMethod);
         return paymentMethod;
     }
+    @Override
+    public List<PaymentMethod> getAllPaymentMethods() {
+        return paymentMethodRepository.findAll();  // Assuming you have or will implement this method
+    }
+
 }

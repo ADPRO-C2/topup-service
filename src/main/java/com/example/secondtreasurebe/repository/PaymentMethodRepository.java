@@ -21,4 +21,9 @@ public class PaymentMethodRepository {
         paymentMethodData.add(paymentMethod);
         return paymentMethod;
     }
+
+    public List<PaymentMethod> findAll() {
+        return new ArrayList<>(paymentMethodData);
+    }
+
 }
