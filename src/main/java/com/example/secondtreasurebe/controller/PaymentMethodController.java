@@ -1,5 +1,6 @@
 package com.example.secondtreasurebe.controller;
 
+import com.example.secondtreasurebe.dto.PaymentMethodRequest;
 import com.example.secondtreasurebe.model.PaymentMethod;
 import com.example.secondtreasurebe.service.PaymentMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,8 @@ public class PaymentMethodController {
     private PaymentMethodService paymentMethodService;
 
     @PostMapping("/")
-    public ResponseEntity<PaymentMethod> createPaymentMethod(@RequestParam String paymentType,
-                                                             @RequestParam(required = false) String cardNumber,
-                                                             @RequestParam(required = false) String cvc,
-                                                             @RequestParam(required = false) String expiryDate,
-                                                             @RequestParam(required = false) String phoneNumber) {
-        PaymentMethod paymentMethod = paymentMethodService.createPaymentMethod(paymentType, cardNumber, cvc, expiryDate, phoneNumber);
+    public ResponseEntity<PaymentMethod> createPaymentMethod(@RequestBody PaymentMethodRequest request) {
+        PaymentMethod paymentMethod = paymentMethodService.createPaymentMethod(request);
         return ResponseEntity.ok(paymentMethod);
     }
 }
