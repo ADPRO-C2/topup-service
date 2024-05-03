@@ -1,32 +1,9 @@
 package com.example.secondtreasurebe.repository;
 
-import com.example.secondtreasurebe.model.PaymentMethod;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import com.example.secondtreasurebe.model.PaymentMethod;
 
 @Repository
-public class PaymentMethodRepository {
-
-    private final List<PaymentMethod> paymentMethodData = new ArrayList<>();
-
-    public PaymentMethod save(PaymentMethod paymentMethod) {
-        if (paymentMethod.getPaymentId() == null) {
-            UUID uuid = UUID.randomUUID();
-            paymentMethod.setPaymentId(uuid.toString());
-        }
-        paymentMethodData.add(paymentMethod);
-        return paymentMethod;
-    }
-
-    public List<PaymentMethod> findAll() {
-        return new ArrayList<>(paymentMethodData);
-    }
-
-    public void delete(String paymentId) {
-        paymentMethodData.removeIf(paymentMethod -> paymentMethod.getPaymentId().equals(paymentId));
-    }
+public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, String> {
 }

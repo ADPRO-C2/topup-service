@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface PaymentMethodService {
     PaymentMethod createPaymentMethod(PaymentMethodRequest request);
-    List<PaymentMethod> getAllPaymentMethods();  // Method to retrieve all payment methods
-    void deletePaymentMethod(String paymentId);  // Method to delete a payment method
+    List<PaymentMethod> getAllPaymentMethods();
+    void deletePaymentMethod(String paymentId);
 }

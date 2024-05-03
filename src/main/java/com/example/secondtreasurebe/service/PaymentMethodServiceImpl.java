@@ -1,48 +1,56 @@
 package com.example.secondtreasurebe.service;
 
 import com.example.secondtreasurebe.dto.PaymentMethodRequest;
-import com.example.secondtreasurebe.factory.PaymentDetailsFactory;
 import com.example.secondtreasurebe.model.PaymentMethod;
+import com.example.secondtreasurebe.strategy.PaymentStrategy;
 import com.example.secondtreasurebe.repository.PaymentMethodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PaymentMethodServiceImpl implements PaymentMethodService {
 
-    private final PaymentDetailsFactory paymentDetailsFactory;
-    private final PaymentMethodRepository paymentMethodRepository;
+    @Autowired
+    private PaymentMethodRepository paymentMethodRepository;
 
     @Autowired
-    public PaymentMethodServiceImpl(PaymentDetailsFactory paymentDetailsFactory, PaymentMethodRepository paymentMethodRepository) {
-        this.paymentDetailsFactory = paymentDetailsFactory;
-        this.paymentMethodRepository = paymentMethodRepository;
-    }
+    @Qualifier("cardPaymentStrategy")
+    private PaymentStrategy cardPaymentStrategy;
+
+    @Autowired
+    @Qualifier("eWalletPaymentStrategy")
+    private PaymentStrategy eWalletPaymentStrategy;
 
     @Override
     public PaymentMethod createPaymentMethod(PaymentMethodRequest request) {
         PaymentMethod paymentMethod = new PaymentMethod();
+        paymentMethod.setPaymentId(UUID.randomUUID().toString());
         paymentMethod.setPaymentType(request.getPaymentType());
-        if ("card".equalsIgnoreCase(request.getPaymentType())) {
-            paymentMethod.setPaymentDetails(paymentDetailsFactory.createCardPaymentDetails(
-                    request.getCardNumber(), request.getCvc(), request.getExpiryDate()));
-        } else if ("e-wallet".equalsIgnoreCase(request.getPaymentType())) {
-            paymentMethod.setPaymentDetails(paymentDetailsFactory.createEWalletPaymentDetails(
-                    request.getPhoneNumber()));
-        } else {
-            throw new IllegalArgumentException("Unsupported payment type: " + request.getPaymentType());
+
+        switch (request.getPaymentType().toLowerCase()) {
+            case "card":
+                paymentMethod.setPaymentDetails(cardPaymentStrategy.processPayment(request));
+                break;
+            case "e-wallet":
+                paymentMethod.setPaymentDetails(eWalletPaymentStrategy.processPayment(request));
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported payment type: " + request.getPaymentType());
         }
-        paymentMethodRepository.save(paymentMethod);
-        return paymentMethod;
+
+        return paymentMethodRepository.save(paymentMethod);
     }
+
     @Override
     public List<PaymentMethod> getAllPaymentMethods() {
-        return paymentMethodRepository.findAll();  // Assuming you have or will implement this method
+        return paymentMethodRepository.findAll();
     }
 
     @Override
     public void deletePaymentMethod(String paymentId) {
-        paymentMethodRepository.delete(paymentId);
+        paymentMethodRepository.deleteById(paymentId);
     }
 }
