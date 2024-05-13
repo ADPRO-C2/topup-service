@@ -2,6 +2,9 @@ name: Java CI/CD Pipeline
 
 on:
   push:
+    branches:
+      - staging
+      - main
   pull_request:
 
 jobs:
@@ -70,3 +73,9 @@ jobs:
           ./gradlew check --info --stacktrace
           ./gradlew test
           ./gradlew jacocoTestReport
+
+      - name: Upload JaCoCo Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: build/reports/jacoco/test/html
