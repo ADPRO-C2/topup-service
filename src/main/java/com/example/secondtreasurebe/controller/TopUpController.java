@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/topups")
+@RequestMapping("/topups")
 public class TopUpController {
 
     @Autowired

@@ -10,4 +10,7 @@ class SecondtreasureBeApplicationTests {
     void contextLoads() {
     }
 
-}
+    @Test
+    void applicationStarts() {
+        SecondtreasureBeApplication.main(new String[]{}); // Call the main method
+    }}
