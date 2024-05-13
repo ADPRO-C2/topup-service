@@ -26,7 +26,7 @@ public class TopUpController {
         return topUpService.getAllTopUps();
     }
 
-    @PostMapping("/{topUpId}/cancel")
+    @PatchMapping("/{topUpId}/cancel")
     public void cancelTopUp(@PathVariable UUID topUpId) {
         topUpService.cancelTopUp(topUpId);
     }

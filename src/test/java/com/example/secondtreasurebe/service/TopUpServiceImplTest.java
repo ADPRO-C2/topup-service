@@ -1,5 +1,6 @@
 package com.example.secondtreasurebe.service;
 
+import com.example.secondtreasurebe.model.TopUpStatus;
 import com.example.secondtreasurebe.model.TopUpTransaction;
 import com.example.secondtreasurebe.repository.TopUpTransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +37,7 @@ class TopUpServiceImplTest {
         topUpTransaction.setUserId(UUID.randomUUID());
         topUpTransaction.setAmount(BigDecimal.valueOf(1000));
         topUpTransaction.setPaymentMethodId(UUID.randomUUID());
-        topUpTransaction.setStatus("pending");
+        topUpTransaction.setStatus(TopUpStatus.PENDING);
     }
 
     @Test
@@ -70,12 +71,12 @@ class TopUpServiceImplTest {
 
         verify(topUpTransactionRepository, times(1)).findById(topUpTransaction.getId());
         verify(topUpTransactionRepository, times(1)).save(topUpTransaction);
-        assertEquals("cancelled", topUpTransaction.getStatus());
+        assertEquals(TopUpStatus.CANCELED, topUpTransaction.getStatus());
     }
 
     @Test
     void testCancelTopUpInvalidState() {
-        topUpTransaction.setStatus("approved");
+        topUpTransaction.setStatus(TopUpStatus.APPROVED);
         when(topUpTransactionRepository.findById(topUpTransaction.getId())).thenReturn(Optional.of(topUpTransaction));
 
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {

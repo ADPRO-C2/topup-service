@@ -23,13 +23,13 @@ class TopUpTransactionTest {
         UUID userId = UUID.randomUUID();
         BigDecimal amount = BigDecimal.valueOf(1000);
         UUID paymentMethodId = UUID.randomUUID();
-        String status = "pending";
+        TopUpStatus status = TopUpStatus.PENDING; // Use enum instead of String
 
         topUpTransaction.setId(id);
         topUpTransaction.setUserId(userId);
         topUpTransaction.setAmount(amount);
         topUpTransaction.setPaymentMethodId(paymentMethodId);
-        topUpTransaction.setStatus(status);
+        topUpTransaction.setStatus(status); // Set status using enum
 
         assertEquals(id, topUpTransaction.getId());
         assertEquals(userId, topUpTransaction.getUserId());

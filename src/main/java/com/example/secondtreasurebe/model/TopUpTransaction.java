@@ -30,7 +30,8 @@ public class TopUpTransaction {
     @Column(name = "payment_method_id", nullable = false)
     private UUID paymentMethodId;
 
+    @Enumerated(EnumType.STRING)
     @NotNull(message = "Status cannot be null")
     @Column(name = "status", nullable = false)
-    private String status;  // "pending", "approved", "rejected"
+    private TopUpStatus status; // Enum usage
 }

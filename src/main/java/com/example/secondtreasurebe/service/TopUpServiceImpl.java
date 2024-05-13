@@ -1,5 +1,6 @@
 package com.example.secondtreasurebe.service;
 
+import com.example.secondtreasurebe.model.TopUpStatus;
 import com.example.secondtreasurebe.model.TopUpTransaction;
 import com.example.secondtreasurebe.repository.TopUpTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class TopUpServiceImpl implements TopUpService {
         transaction.setUserId(userId);
         transaction.setAmount(amount);
         transaction.setPaymentMethodId(paymentMethodId);
-        transaction.setStatus("pending");
+        transaction.setStatus(TopUpStatus.PENDING); // Set initial status
         return topUpTransactionRepository.save(transaction);
     }
 
@@ -31,9 +32,11 @@ public class TopUpServiceImpl implements TopUpService {
 
     @Override
     public void cancelTopUp(UUID topUpId) {
-        TopUpTransaction transaction = topUpTransactionRepository.findById(topUpId).orElseThrow(() -> new IllegalArgumentException("Invalid top-up ID: " + topUpId));
-        if ("pending".equals(transaction.getStatus())) {
-            transaction.setStatus("cancelled");
+        TopUpTransaction transaction = topUpTransactionRepository.findById(topUpId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid top-up ID: " + topUpId));
+
+        if (transaction.getStatus() == TopUpStatus.PENDING) {
+            transaction.setStatus(TopUpStatus.CANCELED);
             topUpTransactionRepository.save(transaction);
         } else {
             throw new IllegalStateException("Top-up is not in a state that can be cancelled.");

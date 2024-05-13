@@ -1,5 +1,6 @@
 package com.example.secondtreasurebe.controller;
 
+import com.example.secondtreasurebe.model.TopUpStatus;
 import com.example.secondtreasurebe.model.TopUpTransaction;
 import com.example.secondtreasurebe.service.TopUpService;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +44,7 @@ class TopUpControllerTest {
         topUpTransaction.setUserId(UUID.randomUUID());
         topUpTransaction.setAmount(BigDecimal.valueOf(1000));
         topUpTransaction.setPaymentMethodId(UUID.randomUUID());
-        topUpTransaction.setStatus("pending");
+        topUpTransaction.setStatus(TopUpStatus.PENDING);
     }
 
     @Test
@@ -56,7 +57,7 @@ class TopUpControllerTest {
                         .content("{\"userId\":\"" + topUpTransaction.getUserId() + "\",\"amount\":1000,\"paymentMethodId\":\"" + topUpTransaction.getPaymentMethodId() + "\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(topUpTransaction.getId().toString()))
-                .andExpect(jsonPath("$.status").value("pending"))
+                .andExpect(jsonPath("$.status").value("PENDING"))
                 .andDo(print());
 
         verify(topUpService, times(1)).createTopUp(any(UUID.class), any(BigDecimal.class), any(UUID.class));
@@ -80,7 +81,7 @@ class TopUpControllerTest {
     void testCancelTopUp() throws Exception {
         doNothing().when(topUpService).cancelTopUp(any(UUID.class));
 
-        mockMvc.perform(post("/topups/{topUpId}/cancel", topUpTransaction.getId())
+        mockMvc.perform(patch("/topups/{topUpId}/cancel", topUpTransaction.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
