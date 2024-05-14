@@ -101,4 +101,56 @@ class TopUpServiceImplTest {
         verify(topUpTransactionRepository, times(1)).findById(invalidId);
         verify(topUpTransactionRepository, never()).save(any(TopUpTransaction.class));
     }
+
+    @Test
+    void testGetTopUpById() {
+        UUID topUpId = UUID.randomUUID();
+        when(topUpTransactionRepository.findById(topUpId)).thenReturn(Optional.of(topUpTransaction));
+
+        TopUpTransaction result = topUpService.getTopUpById(topUpId);
+
+        assertNotNull(result);
+        assertEquals(topUpTransaction, result);
+        verify(topUpTransactionRepository, times(1)).findById(topUpId);
+    }
+
+    @Test
+    void testGetTopUpByIdNotFound() {
+        UUID topUpId = UUID.randomUUID();
+        when(topUpTransactionRepository.findById(topUpId)).thenReturn(Optional.empty());
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            topUpService.getTopUpById(topUpId);
+        });
+
+        assertEquals("Top-up transaction not found with ID: " + topUpId, exception.getMessage());
+        verify(topUpTransactionRepository, times(1)).findById(topUpId);
+    }
+
+    @Test
+    void testGetTopUpByUserId() {
+        int userId = 1;
+        when(topUpTransactionRepository.findByUserId(userId)).thenReturn(Optional.of(Arrays.asList(topUpTransaction)));
+
+        List<TopUpTransaction> result = topUpService.getTopUpByUserId(userId);
+
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(topUpTransaction, result.get(0));
+        verify(topUpTransactionRepository, times(1)).findByUserId(userId);
+    }
+
+    @Test
+    void testGetTopUpByUserIdNotFound() {
+        int userId = 1;
+        when(topUpTransactionRepository.findByUserId(userId)).thenReturn(Optional.empty());
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            topUpService.getTopUpByUserId(userId);
+        });
+
+        assertEquals("No top-up transactions found for user ID: " + userId, exception.getMessage());
+        verify(topUpTransactionRepository, times(1)).findByUserId(userId);
+    }
+
 }

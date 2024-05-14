@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -139,4 +140,60 @@ class PaymentMethodServiceImplTest {
 
         verify(paymentMethodRepository, times(1)).deleteById(paymentId);
     }
+
+    @Test
+    void testGetPaymentMethodById() {
+        String paymentMethodId = UUID.randomUUID().toString();
+        PaymentMethod paymentMethod = new PaymentMethod();
+        when(paymentMethodRepository.findById(paymentMethodId)).thenReturn(Optional.of(paymentMethod));
+
+        PaymentMethod result = paymentMethodService.getPaymentMethodById(paymentMethodId);
+
+        assertNotNull(result);
+        assertEquals(paymentMethod, result);
+        verify(paymentMethodRepository, times(1)).findById(paymentMethodId);
+    }
+
+    @Test
+    void testGetPaymentMethodByIdNotFound() {
+        String paymentMethodId = UUID.randomUUID().toString();
+        when(paymentMethodRepository.findById(paymentMethodId)).thenReturn(Optional.empty());
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            paymentMethodService.getPaymentMethodById(paymentMethodId);
+        });
+
+        assertEquals("Payment method not found with ID: " + paymentMethodId, exception.getMessage());
+        verify(paymentMethodRepository, times(1)).findById(paymentMethodId);
+    }
+
+    @Test
+    void testGetPaymentMethodsByUserId() {
+        int userId = 1;
+        List<PaymentMethod> paymentMethodList = new ArrayList<>();
+        paymentMethodList.add(new PaymentMethod());
+        when(paymentMethodRepository.findByUserId(userId)).thenReturn(Optional.of(paymentMethodList));
+
+        List<PaymentMethod> result = paymentMethodService.getPaymentMethodByUserId(userId);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(paymentMethodRepository, times(1)).findByUserId(userId);
+    }
+
+    @Test
+    void testGetPaymentMethodsByUserIdNotFound() {
+        int userId = 1;
+        when(paymentMethodRepository.findByUserId(userId)).thenReturn(Optional.empty());
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            paymentMethodService.getPaymentMethodByUserId(userId);
+        });
+
+        assertEquals("Payment method not found with user ID: " + userId, exception.getMessage());
+        verify(paymentMethodRepository, times(1)).findByUserId(userId);
+    }
 }
+
+
+

@@ -21,6 +21,7 @@ class PaymentModelTest {
         paymentMethod.setPaymentId("testId");
         paymentMethod.setPaymentType("card");
         paymentMethod.setPaymentDetails(cardDetails);
+        paymentMethod.setUserId(1);
     }
 
     @Test
@@ -36,6 +37,11 @@ class PaymentModelTest {
     @Test
     void testGetPaymentDetails() {
         assertEquals(cardDetails, paymentMethod.getPaymentDetails());
+    }
+
+    @Test
+    void testGetUserId() {
+        assertEquals(1, paymentMethod.getUserId());
     }
 
     @Test
@@ -57,4 +63,11 @@ class PaymentModelTest {
         paymentMethod.setPaymentDetails(eWalletDetails);
         assertEquals(eWalletDetails, paymentMethod.getPaymentDetails());
     }
+
+    @Test
+    void testSetUserId() {
+        paymentMethod.setUserId(2);
+        assertEquals(2, paymentMethod.getUserId());
+    }
+
 }
