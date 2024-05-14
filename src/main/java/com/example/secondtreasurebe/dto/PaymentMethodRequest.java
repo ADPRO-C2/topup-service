@@ -10,4 +10,5 @@ public class PaymentMethodRequest {
     private String cvc;
     private String expiryDate;
     private String phoneNumber;
+    private int userId;
 }

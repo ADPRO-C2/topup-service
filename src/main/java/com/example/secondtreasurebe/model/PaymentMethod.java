@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter @Setter
 @Entity
 @Table(name = "payment_method")
@@ -17,6 +16,10 @@ public class PaymentMethod {
     @NotNull(message = "Payment type cannot be null")
     @Column(name = "payment_type", nullable = false)
     private String paymentType;  // "card" or "e-wallet"
+
+    @NotNull(message = "User ID cannot be null")
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;  // Assuming user_id is an integer as per your request
 
     @NotNull(message = "Payment details cannot be null")
     @OneToOne(cascade = CascadeType.ALL)

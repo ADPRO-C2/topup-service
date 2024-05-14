@@ -20,7 +20,7 @@ public class TopUpTransaction {
 
     @NotNull(message = "User ID cannot be null")
     @Column(name = "user_id", nullable = false)
-    private UUID userId;
+    private int userId;
 
     @NotNull(message = "Amount cannot be null")
     @Column(name = "amount", nullable = false)

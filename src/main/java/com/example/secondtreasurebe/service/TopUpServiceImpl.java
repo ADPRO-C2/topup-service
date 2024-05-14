@@ -16,7 +16,7 @@ public class TopUpServiceImpl implements TopUpService {
     private TopUpTransactionRepository topUpTransactionRepository;
 
     @Override
-    public TopUpTransaction createTopUp(UUID userId, BigDecimal amount, UUID paymentMethodId) {
+    public TopUpTransaction createTopUp(int userId, BigDecimal amount, UUID paymentMethodId) {
         TopUpTransaction transaction = new TopUpTransaction();
         transaction.setUserId(userId);
         transaction.setAmount(amount);
@@ -41,5 +41,17 @@ public class TopUpServiceImpl implements TopUpService {
         } else {
             throw new IllegalStateException("Top-up is not in a state that can be cancelled.");
         }
+    }
+
+    @Override
+    public TopUpTransaction getTopUpById(UUID topUpId) {
+        return topUpTransactionRepository.findById(topUpId)
+                .orElseThrow(() -> new IllegalArgumentException("Top-up transaction not found with ID: " + topUpId));
+    }
+
+    @Override
+    public List<TopUpTransaction> getTopUpByUserId(int userId) {
+        return topUpTransactionRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("No top-up transactions found for user ID: " + userId));
     }
 }

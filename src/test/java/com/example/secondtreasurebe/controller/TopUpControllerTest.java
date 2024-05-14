@@ -41,7 +41,7 @@ class TopUpControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(topUpController).build();
         topUpTransaction = new TopUpTransaction();
         topUpTransaction.setId(UUID.randomUUID());
-        topUpTransaction.setUserId(UUID.randomUUID());
+        topUpTransaction.setUserId(1);
         topUpTransaction.setAmount(BigDecimal.valueOf(1000));
         topUpTransaction.setPaymentMethodId(UUID.randomUUID());
         topUpTransaction.setStatus(TopUpStatus.PENDING);
@@ -49,26 +49,27 @@ class TopUpControllerTest {
 
     @Test
     void testCreateTopUp() throws Exception {
-        when(topUpService.createTopUp(any(UUID.class), any(BigDecimal.class), any(UUID.class)))
+        when(topUpService.createTopUp(anyInt(), any(BigDecimal.class), any(UUID.class)))
                 .thenReturn(topUpTransaction);
 
-        mockMvc.perform(post("/topups")
+        mockMvc.perform(post("/topups/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"userId\":\"" + topUpTransaction.getUserId() + "\",\"amount\":1000,\"paymentMethodId\":\"" + topUpTransaction.getPaymentMethodId() + "\"}"))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())  // Expecting HTTP 201 Created status
                 .andExpect(jsonPath("$.id").value(topUpTransaction.getId().toString()))
                 .andExpect(jsonPath("$.status").value("PENDING"))
                 .andDo(print());
 
-        verify(topUpService, times(1)).createTopUp(any(UUID.class), any(BigDecimal.class), any(UUID.class));
+        verify(topUpService, times(1)).createTopUp(any(int.class), any(BigDecimal.class), any(UUID.class));
     }
+
 
     @Test
     void testGetAllTopUps() throws Exception {
         List<TopUpTransaction> transactions = Arrays.asList(topUpTransaction);
         when(topUpService.getAllTopUps()).thenReturn(transactions);
 
-        mockMvc.perform(get("/topups")
+        mockMvc.perform(get("/topups/")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(topUpTransaction.getId().toString()))

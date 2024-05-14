@@ -34,7 +34,7 @@ class TopUpServiceImplTest {
     void setUp() {
         topUpTransaction = new TopUpTransaction();
         topUpTransaction.setId(UUID.randomUUID());
-        topUpTransaction.setUserId(UUID.randomUUID());
+        topUpTransaction.setUserId(1);
         topUpTransaction.setAmount(BigDecimal.valueOf(1000));
         topUpTransaction.setPaymentMethodId(UUID.randomUUID());
         topUpTransaction.setStatus(TopUpStatus.PENDING);

@@ -20,7 +20,7 @@ class TopUpTransactionTest {
     @Test
     void testGettersAndSetters() {
         UUID id = UUID.randomUUID();
-        UUID userId = UUID.randomUUID();
+        int userId = 1;
         BigDecimal amount = BigDecimal.valueOf(1000);
         UUID paymentMethodId = UUID.randomUUID();
         TopUpStatus status = TopUpStatus.PENDING; // Use enum instead of String

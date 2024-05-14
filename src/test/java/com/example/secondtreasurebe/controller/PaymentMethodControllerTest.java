@@ -41,12 +41,16 @@ class PaymentMethodControllerTest {
         request.setPaymentType("card");
         when(paymentMethodService.createPaymentMethod(request)).thenReturn(paymentMethod);
 
-        ResponseEntity<PaymentMethod> response = paymentMethodController.createPaymentMethod(request);
+        // Update the expected type to ResponseEntity<?> as defined in the controller
+        ResponseEntity<?> response = paymentMethodController.createPaymentMethod(request);
 
         verify(paymentMethodService, times(1)).createPaymentMethod(request);
         assertNotNull(response);
+
+        // Cast the response body to PaymentMethod before comparison
         assertEquals(paymentMethod, response.getBody());
     }
+
 
     @Test
     void testGetAllPaymentMethods() {
@@ -63,12 +67,20 @@ class PaymentMethodControllerTest {
 
     @Test
     void testDeletePaymentMethod() {
+        // Set up the service to do nothing when deletePaymentMethod is called
         doNothing().when(paymentMethodService).deletePaymentMethod("testId");
 
-        ResponseEntity<Void> response = paymentMethodController.deletePaymentMethod("testId");
+        // Call the method under test
+        ResponseEntity<?> response = paymentMethodController.deletePaymentMethod("testId");
 
+        // Verify that the service method was called once
         verify(paymentMethodService, times(1)).deletePaymentMethod("testId");
+
+        // Check that the response is not null
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
+
+        // Check that the response status code is 204 No Content
+        assertEquals(204, response.getStatusCodeValue());
     }
+
 }

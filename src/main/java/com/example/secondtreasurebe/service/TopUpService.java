@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TopUpService {
-    TopUpTransaction createTopUp(UUID userId, BigDecimal amount, UUID paymentMethodId);
+    TopUpTransaction createTopUp(int userId, BigDecimal amount, UUID paymentMethodId);
     List<TopUpTransaction> getAllTopUps();
     void cancelTopUp(UUID topUpId);
+    TopUpTransaction getTopUpById(UUID topUpId);
+    List<TopUpTransaction> getTopUpByUserId(int userId);
 }

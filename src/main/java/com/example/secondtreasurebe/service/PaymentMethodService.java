@@ -8,4 +8,7 @@ public interface PaymentMethodService {
     PaymentMethod createPaymentMethod(PaymentMethodRequest request);
     List<PaymentMethod> getAllPaymentMethods();
     void deletePaymentMethod(String paymentId);
+    PaymentMethod getPaymentMethodById(String paymentId);
+
+    List<PaymentMethod> getPaymentMethodByUserId(Integer userId);
 }

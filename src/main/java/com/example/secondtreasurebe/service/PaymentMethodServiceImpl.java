@@ -28,6 +28,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setPaymentId(UUID.randomUUID().toString());
         paymentMethod.setPaymentType(request.getPaymentType());
+        paymentMethod.setUserId(request.getUserId());
 
         switch (request.getPaymentType().toLowerCase()) {
             case "card":
@@ -51,5 +52,17 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     @Override
     public void deletePaymentMethod(String paymentId) {
         paymentMethodRepository.deleteById(paymentId);
+    }
+
+    @Override
+    public PaymentMethod getPaymentMethodById(String paymentId) {
+        return paymentMethodRepository.findById(paymentId)
+                .orElseThrow(() -> new IllegalArgumentException("Payment method not found with ID: " + paymentId));
+    }
+
+    @Override
+    public List<PaymentMethod> getPaymentMethodByUserId(Integer userId) {
+        return paymentMethodRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Payment method not found with user ID: " + userId));
     }
 }
