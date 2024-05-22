@@ -3,7 +3,7 @@ services:
   prometheus:
     image: prom/prometheus:v2.30.0
     volumes:
-      - ./prometheus:/etc/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Correct path mapping
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
