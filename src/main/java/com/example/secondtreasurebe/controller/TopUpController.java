@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://34.143.169.241")
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("/topups")
 public class TopUpController {
 

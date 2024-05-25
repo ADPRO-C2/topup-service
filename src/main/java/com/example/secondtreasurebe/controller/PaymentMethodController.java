@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @RestController
-@CrossOrigin(origins = "http://34.143.169.241")
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("/payment-methods")
 public class PaymentMethodController {
 
