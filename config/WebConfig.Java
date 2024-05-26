@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true);
 
         registry.addMapping("/payment-methods/**")
-                .allowedOriginPatterns("https://topupserviceadproc2.net")
+                .allowedOriginPatterns("https://frontend-adpro-c2.vercel.app")
                 .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS", "PATCH")
                 .allowedHeaders("Origin", "Content-Type", "Accept")
                 .allowCredentials(true);
@@ -30,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true);
 
         registry.addMapping("/topups/**")
-                .allowedOriginPatterns("https://topupserviceadproc2.net")
+                .allowedOriginPatterns("https://frontend-adpro-c2.vercel.app/")
                 .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS", "PATCH")
                 .allowedHeaders("Origin", "Content-Type", "Accept")
                 .allowCredentials(true);

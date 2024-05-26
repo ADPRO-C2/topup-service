@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000/", "https://topupserviceadproc2.net/"})
+@CrossOrigin(origins = {"http://localhost:3000/", "https://frontend-adpro-c2.vercel.app/"})
 @RequestMapping("/topups")
 public class TopUpController {
 

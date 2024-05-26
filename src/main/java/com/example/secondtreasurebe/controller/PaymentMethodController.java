@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000/", "https://topupserviceadproc2.net/"})
+@CrossOrigin(origins = {"http://localhost:3000/", "https://frontend-adpro-c2.vercel.app/"})
 @RequestMapping("/payment-methods")
 public class PaymentMethodController {
 
