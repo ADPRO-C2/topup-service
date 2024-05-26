@@ -16,11 +16,24 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("Origin", "Content-Type", "Accept")
                 .allowCredentials(true);
 
+        registry.addMapping("/payment-methods/**")
+                .allowedOriginPatterns("https://topupserviceadproc2.net")
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS", "PATCH")
+                .allowedHeaders("Origin", "Content-Type", "Accept")
+                .allowCredentials(true);
+
         // CORS mapping for topups
         registry.addMapping("/topups/**")
                 .allowedOriginPatterns("http://localhost:3000")
                 .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS", "PATCH")
                 .allowedHeaders("Origin", "Content-Type", "Accept")
                 .allowCredentials(true);
+
+        registry.addMapping("/topups/**")
+                .allowedOriginPatterns("https://topupserviceadproc2.net")
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS", "PATCH")
+                .allowedHeaders("Origin", "Content-Type", "Accept")
+                .allowCredentials(true);
     }
+
 }
